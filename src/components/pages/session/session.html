@@ -14,95 +14,21 @@
       :onEdit="editSession"
       :onDelete="deleteSession"
     />
+
     <b-card no-body class="tabs-card">
       <b-tabs card content-class="mt-3">
         <b-tab title="Events">
-
+          <SessionEvent/>
         </b-tab>
         <b-tab title="Consumers">
-          <div class="table-controls">
-            <button
-              class="button"
-              @click="consumerEditor"
-            >
-              Add Consumer
-            </button>
-          </div>
-          <b-table
-            bordered
-            striped
-            hover
-            :items="session.item.consumers.items"
-            :fields="consumerFields"
-            :busy="session.item.consumers.isLoading"
-            id="consumers-table"
-          >
-            <template v-slot:cell(actions)="data">
-              <span class="button">
-                <i class="fas fa-pen" @click="consumerEditor(data.item)"></i>
-              </span>
-              <span class="button">
-                <i class="fas fa-trash" @click="deleteConsumer(data.item.id)"></i>
-              </span>
-            </template>
-          </b-table>
-          <b-pagination
-            pills
-            v-model="consumersPage"
-            :total-rows="consumers.totalCount"
-            :total-pages="consumers.totalPages"
-            :per-page="20"
-            aria-controls="consumers-table"
-            align="center"
-          />
+          <SessionConsumer/>
         </b-tab>
       </b-tabs>
     </b-card>
   </div>
 
+  <button @click="toSessions" class="nav-button">Back to sessions</button>
 
-  <b-modal @hidden="resetConsumer" id="consumer-editor" title="Consumer" hide-footer>
-    <b-form @submit.stop.prevent="submitConsumer" @reset.stop.prevent="resetConsumer" v-if="showConsumerEditor">
-      <b-form-group
-        id="consumer-first-name-group"
-        label="First name:"
-        label-for="consumer-first-name"
-        description="Consumer first name"
-      >
-        <b-form-input
-          id="consumer-first-name"
-          v-model="currentConsumer.firstName"
-          type="text"
-          :state="consumerValidation.firstName"
-          placeholder="Enter first name"
-          aria-describedby="consumer-first-name-feedback"
-        />
-        <b-form-invalid-feedback id="consumer-first-name-feedback">
-          First name is required
-        </b-form-invalid-feedback>
-      </b-form-group>
-      <b-form-group
-        id="consumer-last-name-group"
-        label="Last name:"
-        label-for="consumer-last-name"
-        description="Consumer last name"
-      >
-        <b-form-input
-          id="consumer-last-name"
-          v-model="currentConsumer.lastName"
-          type="text"
-          :state="consumerValidation.lastName"
-          placeholder="Enter last name"
-          aria-describedby="consumer-last-name-feedback"
-        />
-        <b-form-invalid-feedback id="consumer-last-name-feedback">
-          Last name is required
-        </b-form-invalid-feedback>
-      </b-form-group>
-
-      <b-button class="pull-right" size="sm" variant="primary" type="submit">Save</b-button>
-    </b-form>
-  </b-modal>
   <SessionEditorPopup
     :display="showSessionEditor"
     :sessionId="session.item.id"

@@ -8,4 +8,20 @@ export default class EventServices {
       id,
     });
   }
+
+  static createEvent(title, sessionId, investorId) {
+    return request.post(url, {
+      title,
+      sessionId,
+      investorId,
+    });
+  }
+
+  static retrieveEvent(id, page, sessionId) {
+    return request.get(url, {
+      id,
+      page,
+      sessionId,
+    });
+  }
 }

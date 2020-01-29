@@ -1,5 +1,6 @@
 import SessionServices from '../requests/SessionServices';
 import ConsumerServices from '../requests/ConsumerServices';
+import EventServices from '../requests/EventServices';
 
 export default {
   state: {
@@ -20,7 +21,15 @@ export default {
           items: [],
           isLoading: false,
           error: null,
-        }
+        },
+        events: {
+          page: 0,
+          totalCount: 0,
+          totalPages: 0,
+          items: [],
+          isLoading: false,
+          error: null,
+        },
       },
       isLoading: false,
       error: null,
@@ -30,6 +39,7 @@ export default {
     SESSIONS: state => state.sessions,
     SESSION: state => state.session,
     CONSUMERS: state => state.session.item.consumers,
+    EVENTS: state => state.session.item.events,
   },
   mutations: {
     UPDATE_SESSIONS: (state, payload) => Object.assign(state.sessions, payload),
@@ -47,7 +57,15 @@ export default {
             items: [],
             isLoading: false,
             error: null,
-        }
+        },
+        events: {
+          page: 0,
+          totalCount: 0,
+          totalPages: 0,
+          items: [],
+          isLoading: false,
+          error: null,
+        },
       },
       isLoading: false,
         error: null,
@@ -63,6 +81,7 @@ export default {
       const deleteId = state.session.item.consumers.items.findIndex(item => item.id === payload);
       state.session.item.consumers.items.splice(deleteId, 1);
     },
+    UPDATE_EVENTS: (state, payload) => Object.assign(state.session.item.events, payload),
   },
   actions: {
     // payload - page number
@@ -166,13 +185,41 @@ export default {
     // Payload - object, containing session id and page number
     RETRIEVE_CONSUMERS: (context, payload) => {
       ConsumerServices.getConsumers(payload.sessionId, payload.page)
-        .then((response) => context.commit('UPDATE_CONSUMERS', response))
+        .then((response) => context.commit('UPDATE_CONSUMERS', {
+          ...response,
+          isLoading: false,
+          error: null,
+        }))
         .catch(err => context.commit('UPDATE_CONSUMER', err));
     },
     UPDATE_CONSUMER: (context, payload) => {
       ConsumerServices.updateConsumer(payload.id, payload.firstName, payload.lastName)
         .then(() => context.commit('UPDATE_CONSUMER', payload))
         .catch(err => context.commit('UPDATE_CONSUMER', {error: err}));
+    },
+    RETRIEVE_EVENTS: (context, {page, sessionId, id}) => {
+      context.commit('UPDATE_EVENTS', {
+        isLoading: true,
+        error: null,
+      });
+
+      EventServices.retrieveEvent(id, page, sessionId)
+        .then(items => context.commit('UPDATE_EVENTS', {
+          ...items,
+          isLoading: false,
+          error: null
+        }))
+        .catch(err => context.commit('UPDATE_EVENTS', {
+          isLoading: false,
+          error: err,
+        }));
+    },
+    CREATE_EVENT: (context, {title, investorId, sessionId, page}) => {
+      return EventServices.createEvent(title, sessionId, investorId)
+        .then(() => context.dispatch('RETRIEVE_EVENTS', {
+          page,
+          sessionId,
+        }));
     },
   },
 };

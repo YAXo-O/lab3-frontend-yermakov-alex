@@ -1,0 +1,98 @@
+<b-container>
+  <div class="controls">
+    <div class="controls-button pull-right" @click="editConsumption"><i class="fas fa-plus"></i></div>
+  </div>
+  <b-table
+    bordered
+    striped
+    hover
+    :items="event.item.consumptions.items"
+    :fields="consumptionsFields"
+    :busy="consumptions.isLoading"
+    id="consumptions-table"
+  >
+    <template v-slot:cell(actions)="data">
+      <span class="button" @click="() => editConsumption(data.item)">
+        <i class="fas fa-pen"></i>
+      </span>
+      <span class="button" @click="() => deleteConsumption(data.item.id)">
+        <i class="fas fa-trash"></i>
+      </span>
+    </template>
+  </b-table>
+  <b-pagination
+    pills
+    v-model="page"
+    :total-rows="consumptions.totalCount"
+    :total-pages="consumptions.totalPages"
+    :per-page="20"
+    aria-controls="consumptions-table"
+    align="center"
+  />
+
+  <button @click="toSession" class="nav-button">Back to session</button>
+
+  <b-modal @hidden="resetConsumption" id="consumption-editor" title="Consumption" hide-footer>
+    <b-form @submit.stop.prevent="submitConsumption" @reset.stop.prevent="resetConsumption">
+      <b-form-group
+        id="consumption-cost-group"
+        label="Consumption cost"
+        label-for="consumption-cost"
+        description="Consumption cost"
+      >
+        <b-form-input
+          id="consumption-cost"
+          v-model="consumption.cost"
+          type="number"
+          :state="validation.cost"
+          placeholder="Cost"
+          aria-describedby="consumption-cost-feedback"
+        />
+        <b-form-invalid-feedback id="consumption-cost-feedback">
+          Cost is required
+        </b-form-invalid-feedback>
+      </b-form-group>
+      <b-form-group
+        id="consumption-description-group"
+        label="Consumption description"
+        label-for="consumption-description"
+        description="Consumption description"
+      >
+        <b-form-input
+          id="consumption-description"
+          v-model="consumption.description"
+          type="text"
+          :state="validation.description"
+          placeholder="Description"
+          aria-describedby="consumption-description-feedback"
+        />
+        <b-form-invalid-feedback id="consumption-description-feedback">
+          Description is required
+        </b-form-invalid-feedback>
+      </b-form-group>
+
+      <b-table
+        bordered
+        striped
+        hover
+        :items="investors.items"
+        :fields="investorsFields"
+        :busy="investors.isLoading"
+        id="investors-table"
+        v-on:row-clicked="pickConsumer"
+      >
+      </b-table>
+      <b-pagination
+        pills
+        v-model="investorsPage"
+        :total-rows="investors.totalCount"
+        :total-pages="investors.totalPages"
+        :per-page="20"
+        aria-controls="investors-table"
+        align="center"
+      />
+
+      <b-button :disabled="!consumption.consumerId" class="pull-right" size="sm" variant="primary" type="submit">Save</b-button>
+    </b-form>
+  </b-modal>
+</b-container>

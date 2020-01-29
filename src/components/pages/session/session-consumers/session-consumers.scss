@@ -1,13 +1,17 @@
 @import "@/styles/colors.scss";
 @import "@/styles/transitions.scss";
 
+.tabs-card {
+  margin-top: 30px;
+}
+
 .controls {
   display: inline-block;
   width: 100%;
   margin-bottom: 15px;
   float: none;
 
-  .button {
+  .controls-button {
     width: 25px;
     height: 25px;
     background-color: $control-primary-color;
@@ -22,5 +26,24 @@
     &:hover {
       background: $control-primary-color_active;
     }
+  }
+}
+
+
+.button {
+  background-color: $control-primary-color;
+  color: white;
+  padding: 5px;
+  border-radius: 5px;
+  border: none;
+  transition: background-color .5s ease;
+  cursor: pointer;
+
+  &:hover {
+    background-color: $control-primary-color_active;
+  }
+
+  &:focus {
+    outline: none;
   }
 }

@@ -1,0 +1,76 @@
+<section class="session-events">
+  <div class="controls">
+    <div class="button pull-right" @click="addEvent"><i class="fas fa-plus"></i></div>
+  </div>
+
+  <b-table
+    bordered
+    striped
+    hover
+    :items="events.items"
+    :fields="eventsFields"
+    :busy="events.isLoading"
+    id="events-table"
+    v-on:row-clicked="pickEvent"
+  >
+    <template v-slot:cell(created)="data">
+      {{formatDate(data.item.dateCreated)}}
+    </template>
+  </b-table>
+  <b-pagination
+    pills
+    v-model="page"
+    :total-rows="events.totalCount"
+    :total-pages="events.totalPages"
+    :per-page="20"
+    aria-controls="events-table"
+    align="center"
+  />
+
+  <b-modal v-model="selectInvestor" @hidden="resetEvent" id="event-popup" title="Event properties" hide-footer>
+    <b-form @submit.stop.prevent="createEvent" @reset.stop.prevent="resetEvent">
+      <b-form-group
+        id="event-title-group"
+        label="Title:"
+        label-for="event-title"
+        description="Event title"
+      >
+        <b-form-input
+          id="event-title"
+          v-model="title"
+          type="text"
+          :state="titleValidation"
+          placeholder="Enter event title"
+          aria-describedby="event-title-feedback"
+        />
+        <b-form-invalid-feedback id="event-title-feedback">
+          Event title is required
+        </b-form-invalid-feedback>
+      </b-form-group>
+
+      <b-table
+        bordered
+        striped
+        hover
+        :items="investors.items"
+        :fields="investorsFields"
+        :busy="investors.isLoading"
+        id="investors-table"
+        v-on:row-clicked="pickInvestor"
+      >
+      </b-table>
+      <b-pagination
+        pills
+        v-model="investorsPage"
+        :total-rows="investors.totalCount"
+        :total-pages="investors.totalPages"
+        :per-page="20"
+        aria-controls="investors-table"
+        align="center"
+      />
+
+      <b-button :disabled="investor === null" class="pull-right" size="sm" variant="primary" type="submit">Save</b-button>
+    </b-form>
+  </b-modal>
+</section>
+
