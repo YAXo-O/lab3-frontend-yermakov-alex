@@ -1,0 +1,13 @@
+<section :class="`session-card ${this.dummy ? 'session-card__dummy' : ''} ${this.withHover ? 'session-card__with-hover' : ''}`">
+  <div class="controls" v-if="editable">
+    <span class="button">
+      <i class="fas fa-pen" @click="onEdit"></i>
+    </span>
+    <span class="button">
+      <i class="fas fa-trash" @click="onDelete"></i>
+    </span>
+  </div>
+  <h1>{{title}}</h1>
+  <div class="description">{{description}}</div>
+</section>
+

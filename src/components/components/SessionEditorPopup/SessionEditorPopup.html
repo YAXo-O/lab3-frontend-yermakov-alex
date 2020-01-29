@@ -1,0 +1,37 @@
+<b-modal :visible="display" id="session-editor-popup" @show="onShown" @hidden="_onHidden" title="Session" hide-footer>
+  <b-form @submit.stop.prevent="submitEditor" @reset.stop.prevent="resetEditor">
+    <b-form-group
+      id="session-title-group"
+      label="Title:"
+      label-for="session-title"
+      description="Session title"
+    >
+      <b-form-input
+        id="session-title"
+        v-model="title"
+        type="text"
+        :state="validation.title"
+        placeholder="Session title"
+        aria-describedby="session-title-feedback"
+      />
+      <b-form-invalid-feedback id="session-title-feedback">
+        Title is required
+      </b-form-invalid-feedback>
+    </b-form-group>
+    <b-form-group
+      id="session-description-group"
+      label="Description:"
+      label-for="session-description"
+      description="Session description"
+    >
+      <b-form-input
+        id="session-description"
+        v-model="description"
+        type="text"
+        placeholder="Session description"
+      />
+    </b-form-group>
+
+    <b-button class="pull-right" size="sm" variant="primary" type="submit">Save</b-button>
+  </b-form>
+</b-modal>

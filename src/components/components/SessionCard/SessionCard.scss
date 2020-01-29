@@ -1,0 +1,56 @@
+@import "@/styles/colors.scss";
+@import "@/styles/mixins.scss";
+@import "@/styles/animations.scss";
+
+.session-card {
+  position: relative;
+  background-color: $idle-color;
+  border-radius: 10px;
+  box-shadow: 0 0 5px;
+  padding: 15px;
+
+  & ~ & {
+    margin-top: 20px;
+  }
+
+  &__with-hover {
+    transition: background-color .4s ease, transform .4s ease;
+  }
+
+  &__with-hover:hover {
+    background-color: $active-color;
+    transform: scale(1.05);
+    cursor: pointer;
+  }
+
+  .controls {
+    position: absolute;
+
+    right: 15px;
+    top: 15px;
+
+    .button {
+      background-color: $control-primary-color;
+      color: white;
+      padding: 5px;
+      border-radius: 5px;
+      border: none;
+      transition: background-color .5s ease;
+      cursor: pointer;
+
+      &:hover {
+        background-color: $control-primary-color_active;
+      }
+
+      &:focus {
+        outline: none;
+      }
+    }
+  }
+
+ &__dummy {
+    height: 100px;
+    @include skeleton-stripe-gradient($idle-color, $idle-shine-color);
+    animation: skeleton-stripe-animation 2s infinite ease;
+  }
+}

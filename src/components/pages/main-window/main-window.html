@@ -1,0 +1,27 @@
+<b-container>
+  <div class="controls">
+    <div class="button pull-right" @click="newSession"><i class="fas fa-plus"></i></div>
+  </div>
+  <transition name="fade">
+    <div v-if="sessions.isLoading">
+        <SessionCard v-for="n in 20" v:bind:key="n" dummy />
+    </div>
+    <div v-else>
+      <SessionCard
+        v-for="session in sessions.items"
+        :key="session.id"
+        :title="session.title"
+        :description="session.description"
+        v-on:click.native="sessionDetails(session.id)"
+        with-hover
+      />
+    </div>
+  </transition>
+  <transition name="fade">
+    <ErrorCard v-if="sessions.error" :message="sessions.error.reason" />
+  </transition>
+  <SessionEditorPopup
+    :display="displaySessionPopup"
+    :onHidden="() => displaySessionPopup = false"
+  />
+</b-container>

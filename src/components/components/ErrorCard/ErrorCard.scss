@@ -1,0 +1,9 @@
+@import "@/styles/colors.scss";
+
+.error-card {
+  background-color: $error-color;
+  color: $error-text;
+  padding: 15px;
+  margin-top: 15px;
+  border-radius: 10px;
+}

@@ -1,0 +1,26 @@
+@import "@/styles/colors.scss";
+@import "@/styles/transitions.scss";
+
+.controls {
+  display: inline-block;
+  width: 100%;
+  margin-bottom: 15px;
+  float: none;
+
+  .button {
+    width: 25px;
+    height: 25px;
+    background-color: $control-primary-color;
+    border-radius: 50%;
+    float: right;
+    text-align: center;
+    vertical-align: center;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.4s ease;
+
+    &:hover {
+      background: $control-primary-color_active;
+    }
+  }
+}

@@ -1,0 +1,8 @@
+@keyframes skeleton-stripe-animation {
+  0% {
+    background-position: 100% 100%;
+  }
+  40%, 100% {
+    background-position: 0 100%;
+  }
+}
